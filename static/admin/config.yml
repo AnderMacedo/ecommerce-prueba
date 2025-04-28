@@ -8,10 +8,18 @@ public_folder: "assets"
 collections:
   - name: "products"
     label: "Products"
-    file: "products/index.json"
-    format: "json"
-    fields:
-      - { label: "Product Name", name: "title", widget: "string" }
-      - { label: "Description", name: "description", widget: "text" }
-      - { label: "Price", name: "price", widget: "number" }
-      - { label: "Image", name: "image", widget: "image" }
+    files:
+      - file: "products/index.json"
+        label: "Products List"
+        name: "products_list"
+        format: "json"
+        fields:
+          - label: "Products"
+            name: "products"
+            widget: "list"
+            fields:
+              - { label: "Product Name", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Price", name: "price", widget: "number" }
+              - { label: "Image", name: "image", widget: "image" }
+
