@@ -1,21 +1,10 @@
-[
+{
+  "products": [
     {
-      "title": "Jacket",
-      "description": "A cool jacket for winter.",
-      "price": 99.99,
-      "image": "/assets/images/jacket.jpg"
-    },
-    {
-      "title": "Jeans",
-      "description": "Comfortable blue jeans.",
-      "price": 49.99,
-      "image": "/assets/images/jeans.jpg"
-    },
-    {
-      "title": "T-shirt",
-      "description": "Casual t-shirt for everyday wear.",
-      "price": 19.99,
-      "image": "/assets/images/tshirt.jpg"
+      "title": "Camisa",
+      "description": "camisa de nylon",
+      "price": 70,
+      "image": "/assets/camisa.jpg"
     }
   ]
-  
+}
