@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Product Details</title>
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -23,14 +23,8 @@
   </header>
 
   <main>
-    <section class="product-details">
-      <div id="product-info">
-        <img id="product-image" src="" alt="Product Image">
-        <h2 id="product-name"></h2>
-        <p id="product-description"></p>
-        <p id="product-price"></p>
-        <button>Add to Cart</button>
-      </div>
+    <section class="product-detail">
+      <!-- Aquí se cargará la información del producto -->
     </section>
   </main>
 
@@ -38,6 +32,57 @@
     <p>&copy; 2025 Clothing Store. All rights reserved.</p>
   </footer>
 
-  <script src="product-details.js"></script>
+  <script>
+    async function loadProductDetail() {
+      const params = new URLSearchParams(window.location.search);
+      const productSlug = params.get('product');
+      const detailSection = document.querySelector('.product-detail');
+
+      if (!productSlug) {
+        detailSection.innerHTML = '<p>Product not found.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch('/products/index.json');
+        const products = await response.json();
+
+        // Encuentra el producto correspondiente por el slug
+        const product = products.find(p => 
+          p.title && p.title.toLowerCase().replace(/\s+/g, '-') === productSlug
+        );
+
+        if (!product) {
+          detailSection.innerHTML = '<p>Product not found.</p>';
+          return;
+        }
+
+        detailSection.innerHTML = `
+          <div class="product-detail-card">
+            <img src="${product.image}" alt="${product.title}">
+            <div class="product-info">
+              <h2>${product.title}</h2>
+              <p>${product.description}</p>
+              <p class="price">$${product.price.toFixed(2)}</p>
+              <button>Add to Cart</button>
+            </div>
+          </div>
+        `;
+
+        // Botón de agregar al carrito
+        const button = detailSection.querySelector('button');
+        button.addEventListener('click', () => {
+          alert('Item added to cart');
+        });
+
+      } catch (error) {
+        console.error('Error loading product details:', error);
+        detailSection.innerHTML = '<p>Error loading product details.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProductDetail);
+  </script>
+
 </body>
 </html>

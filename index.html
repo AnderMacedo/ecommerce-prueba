@@ -24,35 +24,7 @@
 
   <main>
     <section class="products">
-      <!-- Product 1 -->
-      <div class="product-card">
-        <a href="product-details.html?product=tshirt">
-          <img src="assets/tshirt.jpg" alt="T-shirt">
-        </a>
-        <h2>T-shirt</h2>
-        <p>$25.00</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Product 2 -->
-      <div class="product-card">
-        <a href="product-details.html?product=jeans">
-          <img src="assets/jeans.jpg" alt="Jeans">
-        </a>
-        <h2>Jeans</h2>
-        <p>$40.00</p>
-        <button>Add to Cart</button>
-      </div>
-
-      <!-- Product 3 -->
-      <div class="product-card">
-        <a href="product-details.html?product=jacket">
-          <img src="assets/jacket.jpg" alt="Jacket">
-        </a>
-        <h2>Jacket</h2>
-        <p>$60.00</p>
-        <button>Add to Cart</button>
-      </div>
+      <!-- Aquí se cargarán los productos dinámicamente -->
     </section>
   </main>
 
@@ -60,6 +32,49 @@
     <p>&copy; 2025 Clothing Store. All rights reserved.</p>
   </footer>
 
-  <script src="scripts.js"></script>
+  <script>
+    async function loadProducts() {
+      const productsSection = document.querySelector('.products');
+
+      try {
+        const response = await fetch('/products/index.json');
+        const products = await response.json();
+
+        productsSection.innerHTML = '';
+
+        products.forEach(product => {
+          const slug = product.title ? product.title.toLowerCase().replace(/\s+/g, '-') : '';
+
+          const productCard = document.createElement('div');
+          productCard.className = 'product-card';
+
+          productCard.innerHTML = `
+            <a href="product-details.html?product=${encodeURIComponent(slug)}">
+              <img src="${product.image}" alt="${product.title}">
+            </a>
+            <h2>${product.title}</h2>
+            <p>$${product.price.toFixed(2)}</p>
+            <button>Add to Cart</button>
+          `;
+
+          productsSection.appendChild(productCard);
+        });
+
+        const buttons = document.querySelectorAll('.product-card button');
+        buttons.forEach(button => {
+          button.addEventListener('click', () => {
+            alert('Item added to cart');
+          });
+        });
+
+      } catch (error) {
+        console.error('Error loading products:', error);
+        productsSection.innerHTML = '<p>Error loading products.</p>';
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadProducts);
+  </script>
+
 </body>
 </html>
